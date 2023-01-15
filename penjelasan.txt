@@ -1,0 +1,86 @@
+cara install socialite untuk login dengan google
+
+install socialite harus pertama kali saat install laravel
+
+pertama
+composer require laravel/socialite
+
+setelah itu ke console.cloud.google
+
+jika pertama kali ke console.cloud maka anda harus create project sesuaikan nama lalu create project
+
+
+lalu ke menu credentials,create credentials,pilih Oauth client id
+
+kemudian klik configure consen screen
+pilih exsternal 
+
+app info di isi
+
+
+//penjelasan crud page halaman
+pertama buat controller dengan perintah 
+php artisan make:controller halamanController --resource
+
+setelah itu akan dibuatkan 7 method di controller tersebut
+
+function index
+digunakan untuk menampilkan data
+
+return view('dashboard.halaman.index', [
+            'pages' => page::all()
+
+        ]);
+
+artinya menampilkan view dashboard halaman index dan mengirimkan data pages
+data pages diambil dari model page
+page::all() artinya mengambil semua data dari model page
+
+
+
+penjelasan create
+di controller return view diarahkan ke page create
+
+lalu di view create diisi form action diarahkan menggunakan route ke store
+method untuk create adalah post
+lalu csrf field
+label menggunakan for dan id
+input menggunakan name dan id
+fungsinya untuk mengirimkan data ke store
+
+lalu di button submit menggunakan type submit dan name submit
+
+
+lalu di bagian controller store(Request $request) digunakan untuk menyimpan data
+
+Request $request digunakan untuk mengambil data dari form yang di inputkan oleh user
+
+$request->validate ==>digunakan untuk memvalidasi inputan dari user yang diterima request
+validate Array yang berisi aturan validasi. Aturan validasi ini menentukan apa yang harus dilakukan pada setiap input yang diterima. Misalnya, jika Anda ingin memvalidasi bahwa sebuah input harus berupa email, Anda dapat menambahkan aturan "email" pada array ini.
+
+Array yang berisi pesan yang akan ditampilkan jika validasi gagal. Misalnya, jika Anda ingin menampilkan pesan "Email tidak valid" jika input email tidak valid, Anda dapat menambahkan pesan ini pada array ini.
+
+
+
+$request->validate([ 
+            'judul' => 'required',
+            'isi' => 'required',
+        ], [
+            'judul.required' => 'Judul halaman harus diisi',
+            'isi.required' => 'Isi halaman harus diisi'
+        ]);
+
+        $data = [
+            'judul' => $request->judul,
+            'isi' => $request->isi,
+        ];
+
+        variabel data diisi dengan judul dan isi yang diambil dari request yang di inputkan oleh user 
+
+        
+        page::create($data);
+        page(model) 
+
+
+        return redirect('dashboard/halaman')->with('success', 'Halaman berhasil ditambahkan');
+        jika berhasil maka akan di redirect ke halaman dashboard/halaman dan menampilkan pesan success
